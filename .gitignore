@@ -1,0 +1,22 @@
+# 密钥与私密文件——永不提交
+.env
+.env_grid
+*.pem
+*id_rsa*
+*id_ed25519*
+
+# 运行时产物
+__pycache__/
+*.pyc
+*.log
+grid_snapshot.json
+grid_registry.json
+grid_bot_id.txt
+data.json
+bot_alive.json
+radar.json
+signals.json
+
+# 缓存
+klines_cache.json
+results.json

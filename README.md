@@ -1,0 +1,73 @@
+# Grid Roll · Bybit 合约网格交易机器人
+
+一套完整的 Bybit USDT 永续**合约网格自动化交易系统**：多网格滚仓机器人、SKR 克隆塔、驾驶舱监控面板、部署管线，以及配套的事件研究回测。
+
+> ⚠️ **诚实声明**：本仓库附带 45+ 批策略研究结论与事件研究回测。**静态网格与"暴拉后触顶做空"在历史数据上均为负期望**（详见 `research/pump_fade_backtest.md`）。本项目开源的目的不是出售一个"赚钱机器"——它是一套结构完整的自动化交易基础设施 + 一份完整的"哪些策略不赚钱"研究报告。**实盘有风险，亏损是常态，切勿照搬参数入金。**
+
+## 架构总览
+
+```
+┌─────────────────────────────────────────────────────────┐
+│  VPS (Linux)                                             │
+│  ├── grid_roll.py   主机器人: 多网格巡逻/自动开仓/滚仓    │
+│  │     · 选币: 成交额榜 + ATH/ATL 极值 + EMA 分类        │
+│  │     · 风控: 软件 +30%/-45%, 输局币冷却, 资金红线      │
+│  │     · 长期观察格(noclose): 只巡逻不关仓               │
+│  ├── skr_clone.py   SKR 克隆塔: 锚点每 +0.003 自动克隆   │
+│  ├── bot_trend.py / bot_range.py   趋势/震荡机器人        │
+│  └── .env_grid      API 密钥 (不入库)                     │
+│                                                          │
+│  本地 (Windows)                                          │
+│  ├── dashboard/     驾驶舱: index.html + refresh.ps1      │
+│  ├── sync_bot_logs.py  日志/状态同步                      │
+│  └── research/      事件研究回测 (公开行情, 无需密钥)      │
+└─────────────────────────────────────────────────────────┘
+```
+
+## 快速开始
+
+1. 复制环境模板并填入你的 Bybit API 密钥（只读 + 交易权限的独立子账户 key 更安全）：
+
+```bash
+cp .env.example .env_grid
+# 填 GRID_API_KEY / GRID_API_SECRET
+```
+
+2. 部署到 VPS：
+
+```bash
+scp bots/grid_roll.py user@host:/opt/quant/
+ssh user@host "cd /opt/quant && set -a && . ./.env_grid && set +a && nohup python3 grid_roll.py >> grid_roll_stdout.log 2>&1 &"
+```
+
+3. 本地驾驶舱：`dashboard/` 是纯静态页面（fetch `data.json`），配一个 `python -m http.server` 即可打开。
+
+## 核心参数（`grid_roll.py` 顶部常量，冻结原则）
+
+| 参数 | 值 | 说明 |
+|---|---|---|
+| `BUDGET` | 10 U | 每局本金 |
+| `LEV` | '10' | 杠杆 |
+| `CELLS` | 35 | 格子数上限（按 minOrderAmt 自适应下调） |
+| `ATR_K` | 2.0 | 区间 = 现价 ±2×ATR(4h) |
+| `TP_PER / SL_PER` | 0.30 / 0.45 | 软件止盈止损（按总本金 pnl_per 执行） |
+| `MAX_GRIDS` | 10 | 并行网格上限 |
+| `MIN_FUND` | 15.0 | 资金账户低于此值暂停开新局 |
+| `COOL_SEC` | 4h | 输局币冷却 |
+
+## 踩坑记录（debug/ 目录）
+
+- **grid_mode 映射**：官方文档 1=中性、2=做多、3=做空（极易记反）
+- **entry_price**：是"延迟激活触发价"，传入后限价不成交会让网格停在 `AWAIT_ACTIVATION`
+- **平台 TP/SL 单位**：实测 `stop_loss_per=0.45` 被当作 ~0.45% 提前止损，与 45% 口径冲突 → 改由软件执行
+- **上移/下移终止价**：过极端值（如 max×1000）触发 `TRIGGER_FBU_FAIL` 初始化失败
+- **FUND 资金账户**：网格开仓从 FUND 扣款，不是 UTA 统一账户
+
+## 研究结论（research/）
+
+- 冲顶猎人回测：暴拉后做空，胜率 56.7% < 77% 回本线，期望 -3.06U/单，触顶信号与随机入场无显著差异
+- 静态网格：震荡收割为正但方向仓位主导盈亏——"网格每圈都赚钱，机器人却亏钱"
+
+## License
+
+MIT
