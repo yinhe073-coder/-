@@ -42,7 +42,7 @@ scp bots/grid_roll.py user@host:/opt/quant/
 ssh user@host "cd /opt/quant && set -a && . ./.env_grid && set +a && nohup python3 grid_roll.py >> grid_roll_stdout.log 2>&1 &"
 ```
 
-3. 本地驾驶舱：`dashboard/` 是纯静态页面（fetch `data.json`），配一个 `python -m http.server` 即可打开。
+3. 本地驾驶舱（默认只读预览）：运行 `python dashboard/serve.py --port 8095`，打开 `http://127.0.0.1:8095/`。该入口默认不读取账户或连接交易服务；不要用普通静态服务器替代此入口的安全响应头。
 
 ## 核心参数（`grid_roll.py` 顶部常量，冻结原则）
 
@@ -73,3 +73,8 @@ ssh user@host "cd /opt/quant && set -a && . ./.env_grid && set +a && nohup pytho
 ## License
 
 MIT
+
+
+## 最新驾驶舱界面（2026-11-02）
+
+已同步最新驾驶舱前端及只读预览入口。运行 `python dashboard/serve.py --port 8095`，打开 `http://127.0.0.1:8095/`。默认不连接个人账户、行情或交易服务，缺失数据明确标为不可用，不包含实盘数据或凭据。详情见 [驾驶舱说明](dashboard/README.md)。本次更新仅为界面/只读预览，不代表策略盈利或实时交易全链已通过。

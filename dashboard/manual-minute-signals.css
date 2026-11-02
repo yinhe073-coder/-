@@ -1,0 +1,48 @@
+.mm-panel { min-width: 0; }
+.mm-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.mm-heading h2 { margin: 0; display: flex; align-items: baseline; flex-wrap: wrap; gap: 10px; font-size: 18px; }
+.mm-symbol { font: 600 13px ui-monospace, Consolas, monospace; opacity: .72; }
+.mm-subtitle { margin: 6px 0 0; font-size: 12px; opacity: .65; }
+.mm-refresh { border: 1px solid #40536c; background: transparent; color: inherit; border-radius: 8px; padding: 7px 13px; cursor: pointer; white-space: nowrap; }
+.mm-refresh:disabled { opacity: .5; cursor: default; }
+.mm-refresh:focus-visible, .mm-details summary:focus-visible { outline: 2px solid #53a7ff; outline-offset: 3px; }
+.mm-health { margin: 12px 0; min-height: 18px; font-size: 12px; color: #c29a56; }
+.mm-panel[data-state="ready"] .mm-health { color: #97acc3; }
+.mm-cards { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; }
+.mm-side { min-width: 0; border: 1px solid #354353; border-radius: 13px; padding: 15px 17px; background: #14212d20; }
+.mm-side-head { display: flex; gap: 8px; justify-content: space-between; align-items: center; }
+.mm-side h3 { font-size: 15px; margin: 0; font-weight: 650; }
+.mm-state { font-size: 11px; border-radius: 6px; padding: 3px 7px; background: #61738720; color: #a0adbc; white-space: nowrap; }
+.mm-buy[data-state="confirmed"] { border-color: #2b8c70; background: #239c7010; }
+.mm-sell[data-state="confirmed"] { border-color: #b67d3a; background: #c4812410; }
+.mm-buy[data-state="confirmed"] .mm-state { background: #21886926; color: #46c99b; }
+.mm-sell[data-state="confirmed"] .mm-state { background: #af792a25; color: #e7b563; }
+.mm-side[data-state="expired"], .mm-side[data-state="invalidated"], .mm-side[data-state="blocked"] { opacity: .72; }
+.mm-price-label { margin-top: 13px; font-size: 11px; opacity: .65; }
+.mm-price { margin-top: 2px; font: 600 clamp(23px, 2.5vw, 33px)/1.3 ui-monospace, Consolas, monospace; overflow-wrap: anywhere; }
+.mm-reasons { font-size: 12px; min-height: 34px; margin: 9px 0 12px; line-height: 1.5; opacity: .78; overflow-wrap: anywhere; }
+.mm-facts { display: flex; flex-wrap: wrap; justify-content: space-between; margin: 0; gap: 9px 16px; padding-top: 10px; border-top: 1px solid #74869c26; }
+.mm-facts dt { font-size: 10px; opacity: .6; }
+.mm-facts dd { font: 500 12px/1.5 ui-monospace, Consolas, monospace; margin: 3px 0 0; }
+.mm-details { margin-top: 12px; font-size: 12px; opacity: .8; }
+.mm-details summary { cursor: pointer; padding: 3px 0; width: fit-content; }
+.mm-details-body { margin: 10px 0 0; padding: 9px 12px; border-left: 2px solid #52718d55; }
+.mm-details-body p { font-size: 12px; line-height: 1.6; margin: 4px 0; overflow-wrap: anywhere; }
+@media (max-width: 600px) {
+  .mm-heading h2 { font-size: 16px; gap: 7px; }
+  .mm-subtitle { font-size: 11px; }
+  .mm-cards { gap: 8px; }
+  .mm-side { padding: 11px; }
+  .mm-side-head { flex-direction: column; align-items: flex-start; gap: 6px; }
+  .mm-side h3 { font-size: 14px; }
+  .mm-price { font-size: 22px; }
+  .mm-reasons { min-height: 54px; font-size: 11px; }
+  .mm-facts { display: block; }
+  .mm-facts > div + div { margin-top: 8px; }
+  .mm-times { overflow-wrap: anywhere; }
+}
+@media (max-width: 350px) { .mm-cards { grid-template-columns: minmax(0, 1fr); } }
+.mm-chart-controls { display:flex; flex-wrap:wrap; align-items:center; gap:8px 16px; margin:10px 0 12px; font-size:12px; line-height:1.6; }
+.mm-chart-controls label { display:flex; align-items:center; gap:5px; color:#e6edf5; white-space:nowrap; cursor:pointer; }
+.mm-chart-controls input { accent-color:#0a84ff; }
+#minuteChartSummary { flex:1; min-width:180px; color:#aab6c6; overflow-wrap:anywhere; }

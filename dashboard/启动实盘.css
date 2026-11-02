@@ -1,0 +1,34 @@
+/* ————————————————————————————————————————————————————————————————
+ * H · 「启动实盘」按钮样式（QUANT-L0-USER-START-BUTTON-01/02）
+ *   位置：实盘详情卡片标题栏右侧（.h-right 内，排在既有 chip 之后）；
+ *   窄屏（≤560px）：标题栏换行，按钮落到标题下方**靠右**，`max-width:100%` 防溢出。
+ * 只加在 index.html 引入的这个新文件里 —— 不动 cockpit.css / redesign.css。
+ * ———————————————————————————————————————————————————————————————— */
+#pane-live .card > h2 { flex-wrap: wrap; }
+#pane-live .card > h2 .h-right {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-left: auto;
+}
+#liveStartState { white-space: nowrap; }
+#liveStartBtn { white-space: nowrap; }
+#liveStartBtn[disabled] { opacity: .55; cursor: not-allowed; }
+#pane-live .h-right .chip.green { color: #4ad07a; border-color: rgba(74,208,122,.45); }
+.livestart-bar { margin-top: 8px; }
+.livestart-msg { font-size: 12.5px; line-height: 1.6; opacity: .92; word-break: break-word; }
+.livestart-msg.bad { color: #ff8f8f; }
+.livestart-msg.ok { color: #4ad07a; }
+
+@media (max-width: 560px) {
+  #pane-live .card > h2 { align-items: flex-start; }
+  #pane-live .card > h2 .h-right {
+    width: 100%;
+    margin-left: 0;
+    justify-content: flex-end;      /* 标题下方靠右 */
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+  #liveStartBtn { max-width: 100%; }
+}

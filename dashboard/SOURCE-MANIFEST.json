@@ -1,0 +1,164 @@
+{
+  "version": "2026-11-02",
+  "files": [
+    {
+      "path": "cockpit.css",
+      "sourceSha256": "bc80852ab2364ac69fa8258476cf01177160f22c04c35cdd0dc22d2ad254d44d",
+      "bytes": 22559,
+      "publishedSha256": "bc80852ab2364ac69fa8258476cf01177160f22c04c35cdd0dc22d2ad254d44d"
+    },
+    {
+      "path": "cockpit.js",
+      "sourceSha256": "75649770ac60f42ef730c68f9f96d2796e990abf33b35a1fc805b923d7f2aa78",
+      "bytes": 123261,
+      "publishedSha256": "f27c0488b8d0ec042bf0ff2a1f958149c1b41d9c5f430c219477db36265558c1"
+    },
+    {
+      "path": "hengpan-scan.js",
+      "sourceSha256": "7ff02cae11f93ee7baf682c76d5499e5a62a346b5a4dc742aa07d0cabba294b2",
+      "bytes": 8574,
+      "publishedSha256": "7ff02cae11f93ee7baf682c76d5499e5a62a346b5a4dc742aa07d0cabba294b2"
+    },
+    {
+      "path": "live-focus.css",
+      "sourceSha256": "8d3f98c02f0a1d99dd623d29ace66bcf41b62ec2066d34fc5deaece8510d0df1",
+      "bytes": 3603,
+      "publishedSha256": "bb6cda27acb22385c668cb0aaa37d67de22e4b3e9fa434def3d20793285e9533"
+    },
+    {
+      "path": "manual-market.js",
+      "sourceSha256": "7aa4faf2f92718edb18e7f7ae37b4478802b0be26190bdd89f2a8a1c19fdcc01",
+      "bytes": 7745,
+      "publishedSha256": "7aa4faf2f92718edb18e7f7ae37b4478802b0be26190bdd89f2a8a1c19fdcc01"
+    },
+    {
+      "path": "manual-minute-chart.js",
+      "sourceSha256": "5d1519e76c7d286d4c001142ba82bd357b1f4c33c2cc13171643f7325fe17525",
+      "bytes": 8775,
+      "publishedSha256": "5d1519e76c7d286d4c001142ba82bd357b1f4c33c2cc13171643f7325fe17525"
+    },
+    {
+      "path": "manual-minute-engine.js",
+      "sourceSha256": "f334f17fccd59e8b721335814ae502c8c29315cbe629d78b92bde819680db4d3",
+      "bytes": 17382,
+      "publishedSha256": "f334f17fccd59e8b721335814ae502c8c29315cbe629d78b92bde819680db4d3"
+    },
+    {
+      "path": "manual-minute-signals.css",
+      "sourceSha256": "d74c9738d34e8b39e3bf9ffe38c4fb60445606fcdb6581ed1f62931281cb5341",
+      "bytes": 3727,
+      "publishedSha256": "d74c9738d34e8b39e3bf9ffe38c4fb60445606fcdb6581ed1f62931281cb5341"
+    },
+    {
+      "path": "manual-minute-signals.js",
+      "sourceSha256": "6ffa130c5d8c3584a6353f1b30b196c1c8b653e4a6a59b54a3e29399eb697a4d",
+      "bytes": 16187,
+      "publishedSha256": "6ffa130c5d8c3584a6353f1b30b196c1c8b653e4a6a59b54a3e29399eb697a4d"
+    },
+    {
+      "path": "manual-portfolio.js",
+      "sourceSha256": "5b7629856f281276ca14fda4943d81982e1b96d840e48ed683d0e15ff6ca14ca",
+      "bytes": 10696,
+      "publishedSha256": "5b7629856f281276ca14fda4943d81982e1b96d840e48ed683d0e15ff6ca14ca"
+    },
+    {
+      "path": "manual-tabs.js",
+      "sourceSha256": "21b6cd3b7129260e277dec34fbc261735a64ecf8b4e42ea6724e344fca653270",
+      "bytes": 2266,
+      "publishedSha256": "21b6cd3b7129260e277dec34fbc261735a64ecf8b4e42ea6724e344fca653270"
+    },
+    {
+      "path": "needle-paper.js",
+      "sourceSha256": "456f53760c29030996330439194bcc76319066d5eca948bea517794e7324dc6c",
+      "bytes": 3965,
+      "publishedSha256": "456f53760c29030996330439194bcc76319066d5eca948bea517794e7324dc6c"
+    },
+    {
+      "path": "needle-research.css",
+      "sourceSha256": "6b687da266e494565433f161cd1d7539b1b133de963eefa896f1bd65ab0f5046",
+      "bytes": 3884,
+      "publishedSha256": "6b687da266e494565433f161cd1d7539b1b133de963eefa896f1bd65ab0f5046"
+    },
+    {
+      "path": "needle-research.js",
+      "sourceSha256": "c5d6d4da8952e4fba1c94441cedf4ddd156bda1ea8116c5493666afbe55320c5",
+      "bytes": 17498,
+      "publishedSha256": "c5d6d4da8952e4fba1c94441cedf4ddd156bda1ea8116c5493666afbe55320c5"
+    },
+    {
+      "path": "quant-bridge.js",
+      "sourceSha256": "d63d5380b5d1d0d904f3c8f386f8b1a567b9690a56b31a7ebda3305159ac0c3c",
+      "bytes": 6869,
+      "publishedSha256": "d63d5380b5d1d0d904f3c8f386f8b1a567b9690a56b31a7ebda3305159ac0c3c"
+    },
+    {
+      "path": "readiness-strip.js",
+      "sourceSha256": "1b2c5f508b90fdeb336e5660d48f7bb731f276af22bf07ad85fd7b641a8dc49a",
+      "bytes": 8598,
+      "publishedSha256": "1b2c5f508b90fdeb336e5660d48f7bb731f276af22bf07ad85fd7b641a8dc49a"
+    },
+    {
+      "path": "redesign.css",
+      "sourceSha256": "4e9005682cfd7143821230e0a27eded0788e584814bc31e725aab307fca3b5dd",
+      "bytes": 33279,
+      "publishedSha256": "2fc836333187cbe18375c81c6d6298a2ef4688d3c2378f410ab4b04c933c9033"
+    },
+    {
+      "path": "redesign.js",
+      "sourceSha256": "78a9ea60c7c948f418ddf845de1c74558b7f7b18427706e2fbddc90b1f9ca916",
+      "bytes": 145639,
+      "publishedSha256": "78a9ea60c7c948f418ddf845de1c74558b7f7b18427706e2fbddc90b1f9ca916"
+    },
+    {
+      "path": "style.css",
+      "sourceSha256": "d7915d351836409bb2ecad90e043644b35f63784e60aa2688fb980c20e14c7b3",
+      "bytes": 20497,
+      "publishedSha256": "d7915d351836409bb2ecad90e043644b35f63784e60aa2688fb980c20e14c7b3"
+    },
+    {
+      "path": "启动实盘.css",
+      "sourceSha256": "7664a4a1773c092f0b2f577a0bfb267e9bcf26a835180b35afd0e5ab87bf3657",
+      "bytes": 1700,
+      "publishedSha256": "7664a4a1773c092f0b2f577a0bfb267e9bcf26a835180b35afd0e5ab87bf3657"
+    },
+    {
+      "path": "启动实盘.js",
+      "sourceSha256": "bd01e3cc37ae1a9fc3aee178e88ae986767a2a04a4fb37902ed164f45bcf3b64",
+      "bytes": 12381,
+      "publishedSha256": "bd01e3cc37ae1a9fc3aee178e88ae986767a2a04a4fb37902ed164f45bcf3b64"
+    },
+    {
+      "path": "工作流.js",
+      "sourceSha256": "b43d78d28de7e256a5a55f5458459ffb69888a2d6f966e8e9394dd00a05c0099",
+      "bytes": 5301,
+      "publishedSha256": "b43d78d28de7e256a5a55f5458459ffb69888a2d6f966e8e9394dd00a05c0099"
+    },
+    {
+      "path": "index.html",
+      "sourceSha256": "afd8f6c6c9150ecb43fa3ee9271841aec828bdb76b89c029f8662937685a9bbd",
+      "publicSha256": "e3de045abb36794a31c64a811f1c990c123f02619f72abc2b1994d48c8f2f3e4",
+      "modification": "prepend public-readonly.js",
+      "publishedSha256": "da3b5022b2b087557ada8b486737035c54bb8655faf91ccd980c83231d332661"
+    }
+  ],
+  "excluded": "all runtime JSON, logs, account data, credentials, operational/daemon scripts and private config",
+  "hashFormat": "publishedSha256 hashes Git LF-normalized blob bytes; sourceSha256 hashes original source bytes",
+  "distributionFiles": [
+    {
+      "path": "public-readonly.js",
+      "publishedSha256": "1d62a81fe13c0750e2f4071f28990f034c60b548182cc134b51c16cf3f04648e"
+    },
+    {
+      "path": "serve.py",
+      "publishedSha256": "573370d7081c2bd8346e2d9c9c759c480e8dea7f02ede40046bc49cbc6abeccf"
+    },
+    {
+      "path": "test-readonly.mjs",
+      "publishedSha256": "4a9f1b10108d594fd185909a7d4cc2d0c8056cd1f334cdb64d362c2d92f8cb64"
+    },
+    {
+      "path": "README.md",
+      "publishedSha256": "e85ea84b765bed98c6718f4e42902d8bfad438449f02d268789ed7b4eb550327"
+    }
+  ]
+}

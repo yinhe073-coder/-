@@ -1,0 +1,374 @@
+/* cockpit.css — 量化驾驶舱 v3 新增样式 (2026-09-20)
+   基础样式(卡片/栅格/变量)仍在 style.css; 这里只放页签、K线图、赛马榜、策略工坊。 */
+
+/* ===== 页签 ===== */
+.tabs { display:flex; gap:10px; margin:-6px 0 22px; flex-wrap:wrap; }
+.tab {
+  display:flex; flex-direction:column; align-items:flex-start; gap:2px;
+  padding:11px 20px; border-radius:16px; cursor:pointer; text-align:left;
+  background:var(--panel); border:1px solid var(--line); color:var(--dim);
+  font-family:var(--font); font-size:14px; font-weight:600; letter-spacing:.01em;
+  transition:all .18s ease; backdrop-filter:blur(20px);
+}
+.tab .ti { font-size:15px; margin-right:1px; }
+.tab .ts { font-size:10px; font-weight:400; color:var(--faint); letter-spacing:.02em; }
+.tab:hover { border-color:var(--line2); color:var(--txt); transform:translateY(-1px); }
+.tab.on {
+  color:var(--txt); border-color:rgba(10,132,255,.55);
+  background:linear-gradient(180deg, rgba(10,132,255,.20), rgba(10,132,255,.07));
+  box-shadow:0 0 0 1px rgba(10,132,255,.18), 0 10px 26px rgba(10,132,255,.14);
+}
+.tab.on .ts { color:#8ab6f9; }
+.pane.hidden { display:none; }
+
+.loading { color:var(--faint); font-size:11.5px; }
+
+/* ===== 通用小控件 ===== */
+.minput, #sigInput, .shopform input, .shoptxt {
+  background:rgba(255,255,255,.05); border:1px solid var(--line2); border-radius:11px;
+  color:var(--txt); font-family:var(--mono); font-size:12px; padding:7px 11px; outline:none;
+  transition:border-color .16s;
+}
+.minput { width:118px; }
+.minput:focus, #sigInput:focus, .shopform input:focus, .shoptxt:focus { border-color:rgba(10,132,255,.65); }
+.mbtn {
+  background:rgba(255,255,255,.07); border:1px solid var(--line2); border-radius:11px;
+  color:var(--txt); font-family:var(--font); font-size:11.5px; font-weight:600;
+  padding:7px 14px; cursor:pointer; transition:all .16s;
+}
+.mbtn:hover { background:rgba(255,255,255,.13); border-color:rgba(255,255,255,.3); }
+.mbtn.primary { background:linear-gradient(180deg,#0a84ff,#0069d9); border-color:#0a84ff; color:#fff; }
+.mbtn.primary:hover { filter:brightness(1.12); }
+.mbtn:disabled { opacity:.5; cursor:default; }
+
+/* ===== 周期条 / 图例开关 ===== */
+.tfbars { display:flex; gap:22px; flex-wrap:wrap; margin:2px 0 12px; }
+.tfbar { display:inline-flex; gap:6px; flex-wrap:wrap; }
+.tfg {
+  display:inline-flex; gap:6px; align-items:center; font-size:11px; color:var(--dim);
+  background:rgba(255,255,255,.04); border:1px solid var(--line); border-radius:999px; padding:5px 12px;
+}
+.klegend { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:9px; flex-wrap:wrap; }
+.know { font-family:var(--mono); font-size:11.5px; color:var(--txt); font-variant-numeric:tabular-nums; }
+.know b { font-weight:700; }
+
+/* ===== K 线画布 ===== */
+.kbox { position:relative; }
+#kline {
+  display:block; width:100%; height:430px; border-radius:14px;
+  background:linear-gradient(180deg, rgba(255,255,255,.028), rgba(255,255,255,.008));
+  border:1px solid var(--line); cursor:crosshair;
+}
+.ktip {
+  position:absolute; pointer-events:none; display:none; z-index:5;
+  background:rgba(10,10,12,.94); border:1px solid var(--line2); border-radius:10px;
+  padding:7px 10px; font-family:var(--mono); font-size:10.5px; line-height:1.6;
+  color:var(--txt); white-space:nowrap; box-shadow:0 10px 26px rgba(0,0,0,.6);
+}
+.kfoot { margin-top:9px; font-size:10.5px; color:var(--dim); line-height:1.75; }
+.kfoot .warn { color:var(--yellow); }
+.kfoot .bad { color:var(--red); }
+/* 页脚分两层：第一行只放结论，依据折进 <details> —— 主人 2026-09-21「字太多了不太好看」 */
+.kfsep { color:rgba(255,255,255,.16); font-style:normal; margin:0 1px; }
+.kfline b { color:var(--txt); font-weight:650; }
+.kfmore { margin-top:6px; }
+.kfmore summary {
+  cursor:pointer; list-style:none; display:inline-block; user-select:none;
+  font-size:10px; color:var(--faint); border:1px solid var(--line);
+  border-radius:99px; padding:2px 11px; letter-spacing:.02em;
+}
+.kfmore summary::-webkit-details-marker { display:none; }
+.kfmore summary:hover { color:var(--txt); border-color:var(--line2); }
+.kfmore[open] summary { color:#8ab6f9; border-color:rgba(10,132,255,.38); }
+.kfnote {
+  margin-top:6px; padding-left:10px; border-left:2px solid rgba(255,255,255,.09);
+  color:var(--faint); font-size:10px; line-height:1.75;
+}
+
+/* ===== 综合研判 ===== */
+.judge { display:grid; grid-template-columns:210px 1fr; gap:20px; align-items:stretch; }
+@media (max-width:900px){ .judge { grid-template-columns:1fr; } }
+.jbig {
+  border-radius:16px; padding:16px 18px; display:flex; flex-direction:column;
+  justify-content:center; gap:6px; border:1px solid var(--line2);
+}
+.jbig .v { font-size:34px; font-weight:800; letter-spacing:.06em; line-height:1; }
+.jbig .s { font-family:var(--mono); font-size:12px; color:var(--dim); }
+.jbig.bull { background:linear-gradient(180deg,rgba(48,209,88,.16),rgba(48,209,88,.04)); }
+.jbig.bull .v { color:var(--green); }
+.jbig.bear { background:linear-gradient(180deg,rgba(255,69,58,.16),rgba(255,69,58,.04)); }
+.jbig.bear .v { color:var(--red); }
+.jbig.neut { background:linear-gradient(180deg,rgba(255,214,10,.13),rgba(255,214,10,.03)); }
+.jbig.neut .v { color:var(--yellow); }
+.jact { font-size:15px; font-weight:700; letter-spacing:.01em; }
+.jnote { font-size:11.5px; color:var(--dim); line-height:1.75; }
+.jgrid { display:grid; grid-template-columns:repeat(auto-fit,minmax(168px,1fr)); gap:9px; margin-top:12px; }
+.jitem {
+  background:rgba(255,255,255,.035); border:1px solid var(--line); border-radius:12px; padding:9px 12px;
+}
+.jitem .k { font-size:9.5px; color:var(--faint); letter-spacing:.07em; }
+.jitem .v { font-family:var(--mono); font-size:12px; margin-top:3px; line-height:1.5; }
+.bill { margin-top:12px; border:1px solid var(--line2); border-radius:13px; padding:11px 13px; background:var(--panel2); }
+.bill .bt { font-size:10px; color:var(--dim); letter-spacing:.09em; margin-bottom:8px; }
+.billrow { display:grid; grid-template-columns:74px 62px 1fr; gap:9px; font-size:10.5px; padding:2.5px 0; align-items:baseline; }
+.billrow .n { color:var(--dim); }
+.billrow .s { font-family:var(--mono); font-weight:600; }
+.billrow .w { color:var(--faint); }
+.risklist { margin-top:11px; }
+.risklist div {
+  font-size:10.5px; color:var(--dim); line-height:1.7; padding-left:14px; position:relative;
+}
+.risklist div::before { content:'!'; position:absolute; left:0; top:0; color:var(--yellow); font-weight:700; }
+.risklist div.soft::before { content:'·'; color:var(--faint); }
+.risklist div.soft { color:var(--faint); }
+
+/* ===== 结构分析表 ===== */
+.tatable { width:100%; border-collapse:collapse; font-size:11px; }
+.tatable th {
+  text-align:left; font-size:9.5px; color:var(--faint); font-weight:600;
+  letter-spacing:.07em; padding:6px 9px; border-bottom:1px solid var(--line2);
+}
+.tatable td { padding:7px 9px; border-bottom:1px solid var(--line); vertical-align:top; }
+.tatable tr:last-child td { border-bottom:none; }
+.tatable td.mono { font-family:var(--mono); font-variant-numeric:tabular-nums; }
+.tatable .tf { font-weight:700; }
+.badge { display:inline-block; padding:1px 7px; border-radius:999px; font-size:9.5px; font-weight:700; }
+.badge.g { background:rgba(48,209,88,.14); color:var(--green); }
+.badge.r { background:rgba(255,69,58,.13); color:var(--red); }
+.badge.y { background:rgba(255,214,10,.12); color:var(--yellow); }
+.badge.n { background:rgba(255,255,255,.06); color:var(--dim); }
+
+/* ===== 机器人页 ===== */
+.gate {
+  border-radius:18px; padding:15px 20px; margin-bottom:20px; border:1px solid rgba(255,214,10,.4);
+  background:linear-gradient(180deg,rgba(255,214,10,.13),rgba(255,214,10,.03));
+  font-size:12px; line-height:1.8; color:var(--txt);
+}
+.gate.ok { border-color:rgba(48,209,88,.4); background:linear-gradient(180deg,rgba(48,209,88,.13),rgba(48,209,88,.03)); }
+.gate .gt { font-size:14px; font-weight:700; color:var(--yellow); margin-bottom:3px; }
+.gate.ok .gt { color:var(--green); }
+.gate .gs { color:var(--dim); font-size:11px; }
+
+.rankrow {
+  display:grid; grid-template-columns:38px 150px 92px 88px 74px 84px 1fr; gap:10px;
+  align-items:center; font-size:11.5px; padding:10px 13px; border-radius:13px;
+  background:rgba(255,255,255,.03); border:1px solid transparent; margin-bottom:6px;
+}
+.rankrow:hover { border-color:var(--line2); }
+.rankrow.head {
+  background:none; border:none; padding:0 13px 6px; color:var(--faint);
+  font-size:9.5px; letter-spacing:.07em; margin-bottom:2px;
+}
+.rankrow .rk { font-family:var(--mono); font-weight:700; font-size:13px; }
+.rankrow .nm { font-weight:700; }
+.rankrow .nm small { display:block; font-weight:400; color:var(--faint); font-size:9.5px; font-family:var(--mono); }
+.rankrow .num { font-family:var(--mono); text-align:right; font-variant-numeric:tabular-nums; }
+.rankrow .tag { text-align:right; font-size:10px; }
+.rankrow.p1 { border-color:rgba(255,214,10,.35); background:linear-gradient(90deg,rgba(255,214,10,.10),rgba(255,255,255,.02)); }
+.rankrow.p2 { border-color:rgba(255,255,255,.16); }
+.rankrow.down { border-color:rgba(255,69,58,.3); background:rgba(255,69,58,.06); }
+
+/* ===== 赛马榜：实盘 / 影子 / 统计存疑（主人 2026-10-07 令） ===== */
+.rankfilter { display:flex; flex-wrap:wrap; gap:7px; align-items:center; margin:2px 0 11px; }
+.rankfilter .mbtn { padding:5px 12px; font-size:11px; }
+.rankfilter .mbtn b { font-family:var(--mono); color:var(--faint); }
+.rankfilter .mbtn.on b { color:inherit; }
+.rfnote { color:var(--dim); font-size:10.5px; line-height:1.55; flex:1 1 320px; }
+.rankrow.live { border-color:rgba(48,209,88,.5); background:linear-gradient(90deg,rgba(48,209,88,.12),rgba(255,255,255,.02)); }
+.rankrow.doubt { opacity:.45; border-color:rgba(255,69,58,.28); background:rgba(255,69,58,.045); }
+.rankrow.doubt:hover { opacity:.95; }
+.rankdet { margin:-3px 0 8px; }
+.rankdet.hidden { display:none; }   /* 注意: 现有的 .hidden 只作用在 .pane 上, 这里必须自己声明 */
+.rankdet .rdt {
+  border:1px solid rgba(255,69,58,.3); border-left:3px solid var(--red); border-radius:11px;
+  padding:9px 13px; font-size:10.5px; line-height:1.9; color:var(--dim); background:rgba(255,69,58,.05);
+}
+.rankdet .rdt b { color:var(--txt); }
+.rankdet .rdt code { font-family:var(--mono); color:var(--txt); background:rgba(255,255,255,.07); padding:0 3px; border-radius:4px; }
+.rankcaveat { border-left:3px solid var(--red); padding-left:11px; margin-top:10px; }
+.livesrc { border-left:3px solid var(--green); padding-left:11px; margin-top:10px; }
+.horse.doubtcard { border-color:rgba(255,69,58,.35); background:rgba(255,69,58,.05); }
+.horse .doubtnote {
+  border-left:3px solid var(--red); background:rgba(255,69,58,.08); border-radius:9px;
+  padding:7px 10px; margin-bottom:10px; font-size:10px; line-height:1.75; color:var(--dim);
+}
+.horse .doubtnote b { color:var(--txt); }
+
+.horsegrid { display:grid; grid-template-columns:repeat(auto-fit,minmax(330px,1fr)); gap:14px; }
+.horse { border-radius:15px; padding:15px 17px; background:rgba(255,255,255,.032); border:1px solid var(--line); }
+.horse .hh { display:flex; align-items:baseline; gap:9px; margin-bottom:10px; }
+.horse .hh .n { font-size:14px; font-weight:700; }
+.horse .hh .s { font-family:var(--mono); font-size:10.5px; color:var(--dim); margin-left:auto; }
+.horse .row { display:flex; justify-content:space-between; font-size:11px; padding:3.5px 0; }
+.horse .row .k { color:var(--dim); }
+.horse .row .v { font-family:var(--mono); font-variant-numeric:tabular-nums; }
+.horse .hist { margin-top:9px; border-top:1px solid var(--line); padding-top:7px; }
+.horse .hist .h {
+  display:grid; grid-template-columns:1fr 58px 62px 58px; gap:7px;
+  font-size:10px; font-family:var(--mono); color:var(--dim); padding:2px 0;
+}
+.horse .empty { color:var(--faint); font-size:10.5px; padding:6px 0; }
+.gain { color:var(--green); } .loss { color:var(--red); } .flat { color:var(--dim); }
+
+/* ===== 策略工坊 ===== */
+.shopform { display:flex; gap:14px; flex-wrap:wrap; margin-bottom:12px; }
+.shopform label { display:flex; flex-direction:column; gap:5px; font-size:10px; color:var(--faint); letter-spacing:.05em; }
+.shopform input { width:210px; }
+.shoptxt {
+  width:100%; min-height:230px; resize:vertical; line-height:1.8;
+  font-family:var(--font); font-size:13px; padding:13px 15px;
+}
+.shopact { display:flex; align-items:center; gap:14px; margin-top:12px; }
+.shopmsg { font-size:11.5px; color:var(--dim); }
+.shopmsg.ok { color:var(--green); }
+.shopmsg.bad { color:var(--red); }
+.flow { margin:0; padding-left:18px; }
+.flow li { font-size:11.5px; color:var(--dim); line-height:1.85; margin-bottom:7px; }
+.flow code { font-family:var(--mono); font-size:10.5px; color:#8ab6f9; }
+.shoprow {
+  display:grid; grid-template-columns:150px 1fr 92px 84px; gap:11px; align-items:center;
+  font-size:11.5px; padding:10px 13px; border-radius:12px; background:rgba(255,255,255,.03);
+  margin-bottom:6px; cursor:pointer;
+}
+.shoprow:hover { border-color:var(--line2); box-shadow:inset 0 0 0 1px var(--line2); }
+.shoprow .id { font-family:var(--mono); font-size:10px; color:var(--faint); }
+.shoprow .nm { font-weight:600; }
+.shoprow .nm small { display:block; font-weight:400; color:var(--dim); font-size:10.5px; margin-top:2px;
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.shoprow .st { text-align:right; }
+.shopfull {
+  background:rgba(0,0,0,.42); border:1px solid var(--line2); border-radius:13px;
+  padding:14px 16px; margin:2px 0 10px; font-size:11.5px; line-height:1.85; color:var(--dim);
+  white-space:pre-wrap; font-family:var(--mono); max-height:340px; overflow:auto;
+}
+
+/* ═══════════ 布局优化 v2（2026-09-20，主人反馈排版有问题后重做）═══════════
+   实测：他的浏览器 CSS 视口约 1456×912，而旧版「综合研判」一张卡独占 ~750px
+   还被切掉一截 —— K线图、价格、余额全在首屏之外。首屏等于什么都没看到。
+   三条原则：
+     ① 结论压成条、依据折叠起来（账单是证据不是结论，不该常驻占屏）
+     ② 价格/余额/持仓吸顶常驻，滚到哪儿都在
+     ③ 图跟着窗口长高，而不是写死 430px                                    */
+
+/* 顶栏与页签瘦身：导航不该占黄金位置 */
+.topbar { margin-bottom:13px; }
+.topbar h1 { font-size:20px; }
+.tabs { gap:8px; margin:0 0 13px; }
+.tab { flex-direction:row; align-items:baseline; gap:9px; padding:8px 15px; font-size:13px; border-radius:12px; }
+.tab .ti { font-size:14px; }
+.tab .ts { font-size:10px; }
+.card { padding:16px 18px; border-radius:16px; }
+.grid { gap:14px; }
+
+/* 吸顶行情条 */
+.mktbar {
+  position:sticky; top:0; z-index:40;
+  display:flex; align-items:center; gap:20px; flex-wrap:wrap;
+  padding:9px 18px; margin-bottom:14px;
+  background:rgba(16,16,18,.94); border:1px solid var(--line2); border-radius:14px;
+  backdrop-filter:blur(24px) saturate(1.5);
+  box-shadow:0 12px 30px rgba(0,0,0,.55);
+  font-size:11.5px;
+}
+.mktbar .mkp { display:flex; align-items:baseline; gap:8px; }
+.mktbar .mkp b { font-family:var(--mono); font-size:21px; font-weight:700; letter-spacing:-.02em; }
+.mktbar .mkp b.up { color:var(--green); }
+.mktbar .mkp b.down { color:var(--red); }
+.mktbar .mkp i { font-style:normal; font-family:var(--mono); font-size:12px; }
+.mktbar .mki { color:var(--faint); }
+.mktbar .mki b { color:var(--txt); font-family:var(--mono); font-weight:600; margin-left:5px; }
+
+/* 研判条：一屏内给结论，依据收进折叠 */
+.vstrip { display:grid; grid-template-columns:132px minmax(240px,1fr) 430px; gap:16px; align-items:center; }
+@media (max-width:1180px){ .vstrip { grid-template-columns:132px 1fr; } .vstrip .vmf { grid-column:1/-1; } }
+.vbig { border-radius:13px; padding:11px 14px; border:1px solid var(--line2); text-align:center; }
+.vbig .vv { font-size:25px; font-weight:800; letter-spacing:.04em; line-height:1.1; }
+.vbig .vs { font-family:var(--mono); font-size:11px; color:var(--dim); margin-top:3px; }
+.vbig.bull { background:linear-gradient(180deg,rgba(48,209,88,.16),rgba(48,209,88,.04)); }
+.vbig.bull .vv { color:var(--green); }
+.vbig.bear { background:linear-gradient(180deg,rgba(255,69,58,.16),rgba(255,69,58,.04)); }
+.vbig.bear .vv { color:var(--red); }
+.vbig.neut { background:linear-gradient(180deg,rgba(255,214,10,.13),rgba(255,214,10,.03)); }
+.vbig.neut .vv { color:var(--yellow); }
+.vact { font-size:14px; font-weight:700; }
+.vnote { font-size:11px; color:var(--dim); line-height:1.6; margin-top:3px; }
+.vmf { display:grid; grid-template-columns:repeat(5,1fr); gap:6px; }
+.vmf .m { background:rgba(255,255,255,.035); border:1px solid var(--line); border-radius:9px; padding:5px 3px; text-align:center; }
+.vmf .m .k { font-size:9px; color:var(--faint); }
+.vmf .m .d { font-size:11.5px; font-weight:700; font-family:var(--mono); }
+.vnums { display:flex; flex-wrap:wrap; gap:5px 22px; margin-top:11px; font-size:11px; }
+.vnums span { color:var(--faint); }
+.vnums b { color:var(--txt); font-family:var(--mono); font-weight:600; margin-left:5px; }
+.vsr { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:9px; font-size:11px; }
+.vsr .t { font-size:9.5px; color:var(--faint); letter-spacing:.08em; margin-bottom:4px; }
+.vsr .r { display:flex; justify-content:space-between; padding:1.5px 0; }
+.vsr .r span:last-child { color:var(--dim); font-size:10px; }
+.vdet { margin-top:11px; border-top:1px solid var(--line); padding-top:9px; }
+.vdet > summary { cursor:pointer; font-size:11px; color:var(--dim); outline:none; list-style:none; }
+.vdet > summary::-webkit-details-marker { display:none; }
+.vdet > summary::before { content:'▸ '; color:var(--faint); }
+.vdet[open] > summary::before { content:'▾ '; }
+.vdet > summary:hover { color:var(--txt); }
+
+/* K线卡工具条压成两行，别占三行 */
+.tfbars { gap:14px; margin:2px 0 9px; }
+.tfbar { gap:5px; }
+.tfbars .mbtn { padding:4px 10px !important; font-size:10.5px !important; }
+.klegend { margin-bottom:7px; }
+
+/* ═══════════ K线工具条 v3（2026-09-20 主人要求「容易看、容易操作」后重做）═══════════
+   旧版三行：周期+品种 / 斐波基准 / 指标勾选。新版两行，每组前面带组名，
+   并加「裸K / 结构 / 全套」一键预设（不用每次手点五个勾选框）。
+   颜色图例不放在这里 —— 画进画布右上角，不占布局高度。 */
+.tfbars { display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin:0 0 8px; }
+.tfbars .tfbar { display:inline-flex; align-items:center; gap:5px; }
+.glab { color:var(--faint); font-size:10px; letter-spacing:.06em; margin-right:2px; white-space:nowrap; }
+.mbtn.on { border-color:#0a84ff; color:#8ab6f9; background:rgba(10,132,255,.18); }
+.mbtn.purple.on { border-color:#bf5af2; color:#d9a6ff; background:rgba(191,90,242,.20); }
+.mbtn.mono { font-family:var(--mono); font-size:10.5px; }
+#ovToggles { display:inline-flex; align-items:center; gap:10px; }
+#ovToggles label { display:inline-flex; align-items:center; gap:5px; cursor:pointer; font-size:11px; color:var(--dim); }
+#ovToggles input { accent-color:#0a84ff; }
+
+/* ===== v3 补丁：行情条标明标的口径 + 当前图表标的 ===== */
+.mktbar .mkp em { font-style:normal; font-size:9.5px; color:var(--faint); letter-spacing:.06em; margin-right:2px; }
+#mkSym { font-family:var(--mono); font-size:11px; color:var(--dim); }
+#mkSym b { font-size:12.5px; }
+
+/* ═══════════ K线工具条 r2（2026-09-21 第二轮：合并 · 对齐 · 瘦身）═══════════
+   ①「斐波那契基准」不是一个能改的选项（主人钦定只用日线算），就不该长成紫色按钮：
+     改成一枚静态小字「斐波·日线」，钉在勾选框组尾巴上。
+   ②自定义币种输入框从卡片标题里挪进第一行（它本来就是"选品种"），标题只剩一个数据龄小签。
+   ③两行的组名左对齐（min-width 统一），按钮高度/圆角/字号统一，两行合成一个视觉块。
+   ④右侧常驻值由「最新 开…高…低…收…」精简为「最新收盘 + 涨跌%」——开/高/低在鼠标浮层里。 */
+.tfbars { display:flex; align-items:center; gap:9px 14px; flex-wrap:wrap; margin:0 0 6px; }
+.tfbars + .tfbars { margin-bottom:11px; }
+.tfbars .tfbar { display:inline-flex; align-items:center; gap:5px; flex-wrap:wrap; }
+.tfbars .glab { display:inline-block; min-width:24px; white-space:nowrap; margin-right:3px; }
+.tfbars .mbtn { padding:4px 10px !important; font-size:10.5px !important; line-height:1.3; border-radius:8px; }
+.tfbars .minput { width:112px; padding:5px 9px; font-size:11px; }
+.ksym { display:inline-flex; align-items:center; gap:6px; }
+#ovToggles { display:inline-flex; align-items:center; gap:9px; padding:4px 11px; }
+#ovToggles label { font-size:10.5px; gap:4px; }
+#ovToggles input { width:13px; height:13px; margin:0; }
+/* 卡片标题的副标题：不做第二个大标题，压成一行浅灰小字（主人：标题太长） */
+.card h2 .hsub { font-size:11px; font-weight:400; color:var(--faint); letter-spacing:.02em; margin-left:-5px; }
+#chartCard > h2 { margin-bottom:12px; }
+
+/* ═══════════ r3 收口（2026-09-22 第三轮：统一 > 花哨，只做减法与统一）═══════════
+   ① 说明层字号 10px→11px、色 --faint→--dim。
+      实测（headless 1680×1080）：.kfnote 原为 10px + #636368，在卡片底(≈rgb(20,20,22))上
+      对比度约 3.1:1，低于 WCAG AA 4.5:1 —— 中文 10px 又小又灰，这是「说明文字偏小偏挤」的来源。
+      改后：主标题 15/--txt · 副标题 11/--dim · 正文 13.5/--txt · 说明 11/--dim（靠字重和字号分层）。
+   ② 圆角三档统一：16 卡片/吸顶条 · 12 卡内面板与行 · 9 控件。原先散落 8/10/11/13/14/15/18 七种。
+   ③ 画布上限 660→600 在 cockpit.js（让工具条+图+页脚结论一屏装得下），此处不动高度。 */
+.kfoot { font-size:11.5px; line-height:1.7; }
+.kfmore summary { font-size:11px; color:var(--dim); }
+.kfnote { font-size:11px; color:var(--dim); line-height:1.7; }
+.card h2 .hsub { color:var(--dim); }
+
+.bill, .rankrow, .shopfull, .vbig, .horse, .ktip, .tlrow { border-radius:12px; }
+.gate { border-radius:16px; }
+.mktbar { border-radius:12px; }
+#kline { border-radius:12px; }
+.mbtn, .minput, #sigInput, .shopform input, .shoptxt, .tfbars .mbtn { border-radius:9px; }
