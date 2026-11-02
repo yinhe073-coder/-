@@ -6,14 +6,14 @@
 
 const API = 'http://127.0.0.1:8091';
 const SIX = ['BTCUSDT', 'ETHUSDT', 'SOLUSDT', 'DOGEUSDT', 'SUIUSDT', 'TRUMPUSDT'];
-/* 期货 / 外汇（主人 2026-09-21 要求接进手动操作页）。名字沿用交易员习惯的 CFD 代号，
+/* 期货 / 外汇（操作者 2026-09-21 要求接进手动操作页）。名字沿用交易员习惯的 CFD 代号，
    数据来自 Yahoo Finance —— 映射关系在 cockpit_api.py 的 YF_SYMS 里。 */
 const FUT = ['XAUUSD', 'USOUSD', 'USDJPY'];
 const PICK = SIX.concat(FUT);
 
 /* 图内左上角的状态徽标（趋势 / 五浪 / 斐波基准）—— 全部先收集、最后**排成一行**画。
    以前三块各自往左上角堆，趋势徽标会直接盖住「五浪：未通过…」那行字，
-   叠成一团还都是长句子（主人 2026-09-21：「字太多了不太好看」）。 */
+   叠成一团还都是长句子（操作者 2026-09-21：「字太多了不太好看」）。 */
 let BADGES = [];
 const TFS = [['1', '1分'], ['15', '15分'], ['30', '30分'], ['60', '1小时'], ['D', '日线'], ['W', '周线']];
 const OVS = [['fib', '斐波那契'], ['wave', '五浪'], ['td', '九转'], ['ema', 'EMA'], ['boll', '布林']];
@@ -24,14 +24,14 @@ const S = {
   last: {}, radarCat: '全部',
 };
 
-/* 斐波那契基准：**固定日线**（主人 2026-09-21 钦定「只用日线算」）。
+/* 斐波那契基准：**固定日线**（操作者 2026-09-21 钦定「只用日线算」）。
    以前是可选的（本周期/15分/1小时/4小时/日线/周线），结果同一个品种换个周期看就换一套线，
    容易自己跟自己打架。现在写死一个常量，UI 上也要写明是日线，不能让图和代码对不上。 */
 const FIB_ANCHOR = 'D';
 
 /* 看图的状态（标的/周期/斐波基准/预设/叠加层）落 localStorage。
    为什么必须做：Chrome 在软刷新时会**保留输入框里的文字**，但 JS 状态会重置回 BTCUSDT ——
-   于是出现「输入框写着 HYPEUSDT、图上是 BTC」这种对不上的画面（2026-09-20 主人截图踩到）。 */
+   于是出现「输入框写着 HYPEUSDT、图上是 BTC」这种对不上的画面（2026-09-20 操作者截图踩到）。 */
 const VIEW_KEY = 'dsh.cockpit.view';
 function saveView() {
   try {
@@ -80,7 +80,7 @@ function ageStr(sec) {
    实测：这两个函数原来用**本地 getter**（getHours / getFullYear / getMonth / getDate）
    ⇒ 页面标着「北京」、实际印的是**墨尔本时间**，夏令时期间差 3 小时。
    修法：epoch + 8 小时后取 getUTC* 系列 —— 与顶栏时钟 bjClockStr 同一套算法。
-   主人 2026-10-12 明令：「时间用北京时间 我的电脑是墨尔本时间但是我人在国内」。 */
+   操作者 2026-10-12 明令：「时间用北京时间 我的电脑是墨尔本时间但是我人在国内」。 */
 function bjShift(ts) {
   const 数值 = Number(ts);
   const 毫秒 = (isFinite(数值) && 数值 > 0) ? 数值 : Date.now();
@@ -119,7 +119,7 @@ document.querySelectorAll('.tab').forEach(b => b.addEventListener('click', () =>
 
 /* ───────────── 顶栏时钟 ───────────── */
 /* 本机时区是墨尔本（标准 UTC+10 / 夏令时 UTC+11 ⇒ 夏令时期间比北京快 3 小时）。标着「北京时间」就必须真的按 UTC+8 算 ——
-   拿 new Date() 的本地时间冒充，就是标签和代码算的不是同一个时区（2026-09-20 主人指出；2026-10-12 主人再次明令"时间用北京时间"）。
+   拿 new Date() 的本地时间冒充，就是标签和代码算的不是同一个时区（2026-09-20 操作者指出；2026-10-12 操作者再次明令"时间用北京时间"）。
    ⚠️ 2026-10-12 修正：上面的 bjNow / bjFull 原来正是"本地时间冒充北京"的重灾区，已改为 epoch+8h 取 getUTC*。 */
 let srvOffset = 0;
 function bjClockStr(ms) {
@@ -499,10 +499,10 @@ function buildTfBar() {
     '<span class="mbtn' + (S.tf === k ? ' on' : '') + '" onclick="pickTf(\'' + k + '\')">' + l + '</span>').join('');
   $('symBar').innerHTML = lab('品种') + PICK.map(s =>
     '<span class="mbtn mono' + (S.sym === s ? ' on' : '') + '" onclick="pickSym(\'' + s + '\')">' + s.replace('USDT', '') + '</span>').join('');
-  /* 斐波那契基准 —— 主人 2026-09-21 钦定**只用日线**：不再给选择器，直接写明。
+  /* 斐波那契基准 —— 操作者 2026-09-21 钦定**只用日线**：不再给选择器，直接写明。
      写死一个值的好处：图和代码永远算的是同一个周期，不会再出现"标签/代码对不上"。 */
   const fb = $('fibBar');
-  if (fb) fb.innerHTML = '<span class="glab" title="主人钦定：斐波那契只用日线算">斐波·日线</span>';
+  if (fb) fb.innerHTML = '<span class="glab" title="操作者钦定：斐波那契只用日线算">斐波·日线</span>';
   /* 一键预设：不用每次手点 5 个勾选框 */
   const pb = $('presetBar');
   if (pb) pb.innerHTML = lab('显示') + PRESETS.map(([k, l]) =>
@@ -576,7 +576,7 @@ function klineStaleNote() {
 }
 
 /* 九转计数：与 ta_lib.td_sequential 同口径（c==c4 归零；走满 9 归 1 重新数）
-   主人 2026-09-20 指出图上数到 11、12 是错的 —— 旧口径 run_len 不封顶，现在两边一起封。 */
+   操作者 2026-09-20 指出图上数到 11、12 是错的 —— 旧口径 run_len 不封顶，现在两边一起封。 */
 function tdCounts(cs) {
   const out = []; let dir = null, len = 0;
   for (let i = 0; i < cs.length; i++) {
@@ -601,7 +601,7 @@ function renderKline() {
   const cs = p.candles, n = cs.length;
   const dpr = window.devicePixelRatio || 1;
   const W = cv.clientWidth || 900;
-  /* 图跟着窗口长高, 不再写死 430 —— 主人屏幕 Css 视口只有约 912px 高, 写死高度等于浪费半屏 */
+  /* 图跟着窗口长高, 不再写死 430 —— 操作者屏幕 Css 视口只有约 912px 高, 写死高度等于浪费半屏 */
   /* r3 那轮把上限压到 600、预留加到 360，结果 912 视口下画布从 612 掉到 552 —— **图反而更小了**，
      方向是反的（首屏可见高度一点没变，只是分母变小显得占比好看）。
      K 线卡现在已经挪到页面最前面（首屏直接就是图），所以高度回到原来的上限，让图尽量大。 */
@@ -625,11 +625,11 @@ function renderKline() {
   if (S.ov.boll) { for (const a of [p.boll_up, p.boll_lo]) for (const v of a) if (v != null) extra.push(v); }
   if (S.ov.ema) { for (const a of [p.ema20, p.ema50]) for (const v of a) if (v != null) extra.push(v); }
   const ta = p.ta || {};
-  /* 斐波那契基准: 默认本周期, 也可以让主人指定用哪个周期的摆动来量。
+  /* 斐波那契基准: 默认本周期, 也可以让操作者指定用哪个周期的摆动来量。
      基准里带着 label/zz_pct, 图上必须把它写出来 —— 否则"到底按哪个周期算的"全靠猜。 */
   const fa = p.fib_anchor || { tf: p.tf, label: p.label, zz_pct: p.zz_pct, fib: ta.fib };
   /* 基准段怎么选：zigzag 的摆动点要等反向走够 zz_pct% 才**确认**，所以强势单边里最后那个
-     "已确认"摆动点可能早就作废了。2026-09-21 主人在日线图（基准=周线）上发现：代码量的是
+     "已确认"摆动点可能早就作废了。2026-09-21 操作者在日线图（基准=周线）上发现：代码量的是
      89.61→75.09 那段**下跌**，而现价 95.59 已经把它突破（回撤 141%），7 条线全落在现价
      下方 → 看着"完全在范围外"。公式没错，是**基准那段已经作废**。
      所以：有进行中的摆动就用它（画成 进行中·未确认），没有才用已确认那段。 */
@@ -691,7 +691,7 @@ function renderKline() {
       ctx.textAlign = 'right';
       ctx.fillText(txt, padL + pw - 7, y + 7);
     }
-    /* 图外的扩展位：贴边给一个箭头，别让主人以为没画。
+    /* 图外的扩展位：贴边给一个箭头，别让操作者以为没画。
        这两行必须避开左上角的徽标行 —— 徽标底衬从 priceT+6 起、高 17，原来 ↑扩 正好压在
        底衬带上、↓扩 直接落进底衬里被盖住。统一挪到徽标行下方（badgeBottom 由徽标段回填）。 */
     let oi = 0;
@@ -757,7 +757,7 @@ function renderKline() {
     }
   }
   /* ═══ 五浪 ═══
-     主人 2026-09-21：「五浪也不对，重新做；**用一小时线做基准**；每个符号都要看得清楚，
+     操作者 2026-09-21：「五浪也不对，重新做；**用一小时线做基准**；每个符号都要看得清楚，
      不要堆在一起。」所以：① 波浪结构一律取 1 小时周期的（服务端 wave_anchor）——
      十分钟图上数日线的浪、日线图上数周的浪，本来就没法看；② 标签只留短号 W1~W5
      并带底衬，涨跌幅挪到下面 kFoot；③ 标签之间做避让，挤到了就往外挪一格。 */
@@ -872,7 +872,7 @@ function renderKline() {
   }
 
   /* ═══ 分钟级趋势徽标 ═══
-     主人 2026-09-20 要求"先判断是上升还是下降趋势"。这个判断必须画在图上 ——
+     操作者 2026-09-20 要求"先判断是上升还是下降趋势"。这个判断必须画在图上 ——
      否则下面那些买卖点就没有方向可言，跟"超卖就买"没区别。
      2026-09-21：不再单独画，改成塞进左上角那一行徽标的**第一个**。 */
   (function () {
@@ -982,7 +982,7 @@ function renderKline() {
   }
 
   /* 页脚：结构文字。
-     主人 2026-09-21：「字太多了不太好看」。所以分两层 ——
+     操作者 2026-09-21：「字太多了不太好看」。所以分两层 ——
      第一层只留**结论**（一行，扫一眼就够），第二层把"为什么这么判"折进 <details>，
      想核对的时候点开，平时不占版面。 */
   const td = ta.td || {};
@@ -1071,7 +1071,7 @@ function sigTipHtml(s) {
     const p = S.kl; if (!p || !p.ok) return;
     const r = cv.getBoundingClientRect();
     const x = ev.clientX - r.left, y = ev.clientY - r.top;
-    /* 先判是不是停在买卖点上 —— 停上了就优先给"确定的理由"（主人要的核心） */
+    /* 先判是不是停在买卖点上 —— 停上了就优先给"确定的理由"（操作者要的核心） */
     const hit = (S.sigMarkers || []).find(m => (m.box && x >= m.box.x && x <= m.box.x + m.box.w && y >= m.box.y && y <= m.box.y + m.box.h) || (Math.abs(m.x - x) < 15 && Math.abs(m.y - y) < 17));
     if (hit) {
       tip.style.whiteSpace = 'normal';
@@ -1125,7 +1125,7 @@ async function loadVerdict(force) {
     const mfOrder = [['d1', '日线'], ['4h', '4小时'], ['1h', '1小时'], ['15m', '15分'], ['1m', '1分']];
     /* 布局 v2：结论压成条，依据收进折叠。
        旧版把 9 格指标 + 两张完整账单 + 风险清单全摊开 = 一张卡 750px，
-       主人的 912px 视口被它一张吃光，K线图完全在屏幕外。 */
+       操作者的 912px 视口被它一张吃光，K线图完全在屏幕外。 */
     const wasOpen = !!document.querySelector('.vdet[open]');
     let h = '<div class="vstrip">';
     h += '<div class="vbig ' + k + '"><div class="vv">' + esc(v.verdict) + '</div>' +
@@ -1309,7 +1309,7 @@ async function _mergeMm(d) {
   } catch (e) { /* 快通道挂了不影响主页面 */ }
 }
 
-/* ── 实盘条目（主人 2026-10-07 令：把在跑的实盘机器人放进赛马榜同榜对照）────────
+/* ── 实盘条目（操作者 2026-10-07 令：把在跑的实盘机器人放进赛马榜同榜对照）────────
    数据源与影子**完全不同**：实盘走 Bybit 交易所只读接口（closedPnl 已是扣费后净额
    ＋ 资金费），由 scripts\live_rank_sync.ps1 拉取后写 dashboard/live.json；
    影子走模拟账本。两者不可直接比较 —— 所以单独一组、单独标注来源。 */
@@ -1421,7 +1421,7 @@ function renderShadow(d) {
     } else if (isSig) {
       sub = (b.tf || '?') + '分 · ' + (b.lev || '?') + 'x · ' + esc(b.position || '空仓') +
         (b.verify_blocked ? ' · 已停开仓' : '');
-      /* 主人问"为什么是 0" —— 把原因写在榜上，别让人去翻日志。 */
+      /* 操作者问"为什么是 0" —— 把原因写在榜上，别让人去翻日志。 */
       if (isJev && b.jev_stats && b.jev_stats._summary) {
         const s = b.jev_stats._summary;
         sub += ' · Jev 判过 ' + (s.total_decisions || 0) + ' 次';
@@ -1468,7 +1468,7 @@ function renderShadow(d) {
   }
   list.sort((a, b) => (b.ret == null ? -1e9 : b.ret) - (a.ret == null ? -1e9 : a.ret));
 
-  /* 组别筛选（主人 2026-10-07 令）：实盘 / 影子·结构正常 / 影子·存疑 三组分开看。
+  /* 组别筛选（操作者 2026-10-07 令）：实盘 / 影子·结构正常 / 影子·存疑 三组分开看。
      为什么要分组：影子那边有一条 +100398% 是**结构缺陷**（越界持仓的浮盈），
      跟实盘的 +15.92%（真金）放在同一根轴上比，会让人误判 —— 所以既能筛，
      存疑的条目又**置灰并保留可展开依据**，不删除别人的条目。 */
@@ -1538,7 +1538,7 @@ function renderShadow(d) {
     '<b>三种腿不是一回事</b>：网格腿逐格吃价差；信号腿等驾驶舱的买卖点（约 3 小时一个）；<b>原版做市腿不等任何信号</b>，每 ~300ms 撤旧单挂新单。' +
     '网格的 grid_profit 是逐格累计、无成交血缘，不可信；只有 pnl_u 可信。</div>';
 
-  /* 实盘条目的口径与数据截止时间 —— 必须写在页面上，不许让主人以为实盘是模拟 */
+  /* 实盘条目的口径与数据截止时间 —— 必须写在页面上，不许让操作者以为实盘是模拟 */
   if (d.live && d.live.entries) {
     const lv = d.live;
     const le = lv.entries.map(e => '<b>' + esc(e.name) + '</b>：标的 ' + esc(e.symbol) +
@@ -1605,7 +1605,7 @@ function renderShadow(d) {
           (x.liquidations || 0), (x.liquidations ? 'loss' : 'flat')) +
         row('手续费', fmtNum(x.fees, 4), 'flat') +
         row('爆仓距离', (x.liq_distance_pct == null ? '--' : x.liq_distance_pct + '%'), 'flat') +
-        /* 信号来源校验：主人 2026-09-20 要求"根据驾驶舱实时给出来的买卖点交易"。
+        /* 信号来源校验：操作者 2026-09-20 要求"根据驾驶舱实时给出来的买卖点交易"。
            驾驶舱是权威；不一致就必须一眼看见，不能藏在日志里。 */
         (function () {
           const vs = x.verify_state;
@@ -1639,7 +1639,7 @@ function renderShadow(d) {
           }
           return h2;
         })() : '') +
-        /* 决策明细：让主人直接看到它每次判了什么、信心多少、事后对不对 */
+        /* 决策明细：让操作者直接看到它每次判了什么、信心多少、事后对不对 */
         (isJev && (x.decisions_recent || []).length ? (function () {
           let h3 = '<div class="hist"><div class="h" style="color:var(--faint);">' +
             '<span>时间</span><span>信号</span><span>信心→仓位</span><span>事后60根</span></div>';
@@ -1830,7 +1830,7 @@ $('stSend').addEventListener('click', async () => {
     loadShop(true);
   } catch (e) {
     /* "Failed to fetch" 有两种完全不同的原因，必须分开说 ——
-       2026-09-20 就是这里含糊，把「服务端缺 OPTIONS 预检处理」说成了「服务没起」，把主人带偏。
+       2026-09-20 就是这里含糊，把「服务端缺 OPTIONS 预检处理」说成了「服务没起」，把操作者带偏。
        判据：GET 若能通，服务就是活的，那这次失败一定是跨域预检被拦。 */
     msg.className = 'shopmsg bad';
     let why = '网络层失败（' + e.message + '）。';

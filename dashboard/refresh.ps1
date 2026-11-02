@@ -97,10 +97,10 @@ while ($true) {
     grid = $grid
     ts = [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
     server_time = $srvTime
-    stop = 78600
-    tp1 = 84800
-    tp2 = 90100
-    entry = 80320.2
+    stop = $null  # No private trade plan is distributed.
+    tp1 = $null  # No private trade plan is distributed.
+    tp2 = $null  # No private trade plan is distributed.
+    entry = $null  # No private trade plan is distributed.
     refresh_at = (Get-Date -Format "yyyy-MM-dd HH:mm:ss")
   } | ConvertTo-Json -Depth 6 -Compress
   Set-Content "$dash\data.json" -Value $data -Encoding utf8

@@ -68,7 +68,7 @@
 .kfoot { margin-top:9px; font-size:10.5px; color:var(--dim); line-height:1.75; }
 .kfoot .warn { color:var(--yellow); }
 .kfoot .bad { color:var(--red); }
-/* 页脚分两层：第一行只放结论，依据折进 <details> —— 主人 2026-09-21「字太多了不太好看」 */
+/* 页脚分两层：第一行只放结论，依据折进 <details> —— 操作者 2026-09-21「字太多了不太好看」 */
 .kfsep { color:rgba(255,255,255,.16); font-style:normal; margin:0 1px; }
 .kfline b { color:var(--txt); font-weight:650; }
 .kfmore { margin-top:6px; }
@@ -168,7 +168,7 @@
 .rankrow.p2 { border-color:rgba(255,255,255,.16); }
 .rankrow.down { border-color:rgba(255,69,58,.3); background:rgba(255,69,58,.06); }
 
-/* ===== 赛马榜：实盘 / 影子 / 统计存疑（主人 2026-10-07 令） ===== */
+/* ===== 赛马榜：实盘 / 影子 / 统计存疑（操作者 2026-10-07 令） ===== */
 .rankfilter { display:flex; flex-wrap:wrap; gap:7px; align-items:center; margin:2px 0 11px; }
 .rankfilter .mbtn { padding:5px 12px; font-size:11px; }
 .rankfilter .mbtn b { font-family:var(--mono); color:var(--faint); }
@@ -242,7 +242,7 @@
   white-space:pre-wrap; font-family:var(--mono); max-height:340px; overflow:auto;
 }
 
-/* ═══════════ 布局优化 v2（2026-09-20，主人反馈排版有问题后重做）═══════════
+/* ═══════════ 布局优化 v2（2026-09-20，操作者反馈排版有问题后重做）═══════════
    实测：他的浏览器 CSS 视口约 1456×912，而旧版「综合研判」一张卡独占 ~750px
    还被切掉一截 —— K线图、价格、余额全在首屏之外。首屏等于什么都没看到。
    三条原则：
@@ -316,7 +316,7 @@
 .tfbars .mbtn { padding:4px 10px !important; font-size:10.5px !important; }
 .klegend { margin-bottom:7px; }
 
-/* ═══════════ K线工具条 v3（2026-09-20 主人要求「容易看、容易操作」后重做）═══════════
+/* ═══════════ K线工具条 v3（2026-09-20 操作者要求「容易看、容易操作」后重做）═══════════
    旧版三行：周期+品种 / 斐波基准 / 指标勾选。新版两行，每组前面带组名，
    并加「裸K / 结构 / 全套」一键预设（不用每次手点五个勾选框）。
    颜色图例不放在这里 —— 画进画布右上角，不占布局高度。 */
@@ -336,7 +336,7 @@
 #mkSym b { font-size:12.5px; }
 
 /* ═══════════ K线工具条 r2（2026-09-21 第二轮：合并 · 对齐 · 瘦身）═══════════
-   ①「斐波那契基准」不是一个能改的选项（主人钦定只用日线算），就不该长成紫色按钮：
+   ①「斐波那契基准」不是一个能改的选项（操作者钦定只用日线算），就不该长成紫色按钮：
      改成一枚静态小字「斐波·日线」，钉在勾选框组尾巴上。
    ②自定义币种输入框从卡片标题里挪进第一行（它本来就是"选品种"），标题只剩一个数据龄小签。
    ③两行的组名左对齐（min-width 统一），按钮高度/圆角/字号统一，两行合成一个视觉块。
@@ -351,7 +351,7 @@
 #ovToggles { display:inline-flex; align-items:center; gap:9px; padding:4px 11px; }
 #ovToggles label { font-size:10.5px; gap:4px; }
 #ovToggles input { width:13px; height:13px; margin:0; }
-/* 卡片标题的副标题：不做第二个大标题，压成一行浅灰小字（主人：标题太长） */
+/* 卡片标题的副标题：不做第二个大标题，压成一行浅灰小字（操作者：标题太长） */
 .card h2 .hsub { font-size:11px; font-weight:400; color:var(--faint); letter-spacing:.02em; margin-left:-5px; }
 #chartCard > h2 { margin-bottom:12px; }
 

@@ -20,3 +20,22 @@ signals.json
 # 缓存
 klines_cache.json
 results.json
+
+# Additional local credentials and private runtime artifacts
+.env.*
+!.env.example
+*.key
+*.p12
+*.pfx
+*.sqlite*
+*.db
+*.pid
+.venv/
+.playwright-mcp/
+logs/
+run/
+wallet*.json
+live*.json
+shadow*.json
+positions*.json
+account*.json

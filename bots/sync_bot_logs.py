@@ -17,7 +17,8 @@ DASH = r'WORKSPACE\量化交易\工程\dashboard'
 os.makedirs(DST, exist_ok=True)
 
 c = paramiko.SSHClient()
-c.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+c.load_system_host_keys()
+c.set_missing_host_key_policy(paramiko.RejectPolicy())
 key = paramiko.RSAKey.from_private_key_file(r'WORKSPACE\bybit-skill\vps_id_rsa')
 c.connect(ENV['VPS_HOST'], port=int(ENV['VPS_PORT']), username=ENV['VPS_USER'],
           pkey=key, timeout=25)

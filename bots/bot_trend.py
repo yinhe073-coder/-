@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-# trend_bot v1 — BTC/ETH 趋势跟随+回踩 / 关键位突破, 逐仓隔离(主账户 10U 试水)
-# 规则冻结: docs/建模/趋势跟随机器人规则书v1.md (主人钦定 2026-08-29)
+# Illustrative strategy notes; not a personal account allocation.
+# Illustrative strategy notes; not a personal account allocation.
 # 保命纪律: 单日-10%熔断 / 连亏3单停机 / 结算点前15min不开仓 / 启动对账不一致FATAL
 import hashlib, hmac, json, time, os, sys, datetime
 import urllib.request, urllib.error
@@ -13,7 +13,7 @@ SECRET = os.environ['TREND_API_SECRET']
 # ===== 参数冻结(规则书v1) =====
 SYMBOLS = ['ETHUSDT', 'BTCUSDT']   # 只做BTC/ETH, ETH优先(最小单量适配10U)
 LEV = 20                           # 逐仓20x
-BUDGET = 10.0                      # 试水本金上限(主账户只投10U)
+BUDGET = 10.0  # Illustrative configuration, not personal account data.
 RISK_PCT = 0.03                    # 单笔风险3% = 0.30U
 PLANNED_RISK = BUDGET * RISK_PCT   # 1R阈值用计划风险(规格), 不用实际风险
 MAX_RISK_PCT = 0.05                # 风险上限5%

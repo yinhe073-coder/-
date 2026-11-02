@@ -1,20 +1,20 @@
 # -*- coding: utf-8 -*-
-# skr_clone.py — SKR 克隆塔监控 (主人钦定 2026-08-31)
-# 规则: 盯着 SKRUSDT 历史最高价(锚点 0.026222), 每上涨 0.003 就克隆主人的 SKR 机器人一单;
-#       克隆参数完全复制主人的: 做空/20x/100格/等比格/移动(1, 0.000001)/10U, 区间按当前价等比缩放;
-#       主人的机器人永不关闭(软件也不碰, 见 grid_roll noclose); 资金 < 12U 时停止并写告警文件
+# Illustrative strategy notes; not a personal account allocation.
+# Illustrative strategy notes; not a personal account allocation.
+# Illustrative strategy notes; not a personal account allocation.
+# Illustrative strategy notes; not a personal account allocation.
 import grid_roll as g, json, time, sys
 
 SYM = 'SKRUSDT'
-ANCHOR = 0.026222
-STEP = 0.003
+ANCHOR = float(g.os.environ['SKR_ANCHOR'])  # Required explicit operator configuration.
+STEP = float(g.os.environ['SKR_STEP'])  # Required explicit operator configuration.
 MASTER_BOT = 'YOUR_BOT_ID'
 FUND_MIN = 12.0
-INVEST = '10'
+INVEST = str(g.os.environ['SKR_INVEST'])  # Required explicit operator configuration.
 CELLS = 100
 LEV = '20'
-RATIO_MIN = 0.9738   # 主人区间: min/entry
-RATIO_MAX = 1.0995   # 主人区间: max/entry
+RATIO_MIN = float(g.os.environ['SKR_RATIO_MIN'])  # Required explicit operator configuration.
+RATIO_MAX = float(g.os.environ['SKR_RATIO_MAX'])  # Required explicit operator configuration.
 TICK_SEC = 60
 RETRY_SEC = 900
 VERIFY_SEC = 75
@@ -45,11 +45,11 @@ def save_state(s):
 def fund_low_marker(s):
     try:
         with open('skr_fund_low.txt', 'w', encoding='utf-8') as f:
-            f.write('fund < %.0fU, pending=%.6f, 克隆暂停, 等主人补资金\n' % (FUND_MIN, s['pending'] or 0))
+            f.write('fund < %.0fU, pending=%.6f, 克隆暂停, 等操作者补资金\n' % (FUND_MIN, s['pending'] or 0))
     except Exception:
         pass
 
-log('=== SKR 克隆塔启动: 锚点 %.6f, 每 +%.3f 克隆一单, 主人机器人 %s 永不关闭 ===' % (ANCHOR, STEP, MASTER_BOT))
+log('=== SKR 克隆塔启动: 锚点 %.6f, 每 +%.3f 克隆一单, 操作者机器人 %s 永不关闭 ===' % (ANCHOR, STEP, MASTER_BOT))
 while True:
     try:
         s = load_state()
@@ -68,7 +68,7 @@ while True:
             if fund < FUND_MIN:
                 if not s['fund_low']:
                     s['fund_low'] = True
-                    log('资金不足: fund=%.2f < %.0f, 克隆暂停, 请主人补资金' % (fund, FUND_MIN))
+                    log('资金不足: fund=%.2f < %.0f, 克隆暂停, 请操作者补资金' % (fund, FUND_MIN))
                     fund_low_marker(s)
                 save_state(s)
                 time.sleep(TICK_SEC)

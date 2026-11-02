@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # range_bot v4.9 — 滚仓模式: 不停(MAX_GAMES=9999), 权益动态放大(名义=权益x10), 止盈=净赚1U(触发线=1U+手续费缓冲+资金费缓冲)
-# 阶梯: 权益>=100 划50到主账户; >=500 划250; >=1000 停并报告
+# Illustrative strategy notes; not a personal account allocation.
 import hashlib, hmac, json, time, uuid, os, sys
 import urllib.request, urllib.error
 
@@ -14,11 +14,11 @@ POOL = ['DOGEUSDT', 'ENAUSDT', 'SUIUSDT', 'TRUMPUSDT', '1000PEPEUSDT', 'SOLUSDT'
 MAX_GAMES = 9999
 GAME_MINUTES = 360   # v4.5: S43寻优最优=360min
 NOTIONAL = 250.0          # 占位, 实际动态 = equity*LEV
-TP_NET = 1.0              # v4.8/v4.9 主人钦定: 每单扣除所有成本后净赚1U
+TP_NET = 1.0  # Illustrative configuration, not personal account data.
 COST_RATE = 0.0013        # 0.13%/来回(taker0.055%x2+滑点0.01%x2), 按名义计
 FUND_SETTLE_PER_GAME = 2  # 6小时局最多跨2个资金费结算点, 缓冲按此计
 LEV = 10                 # v4.5: S43寻优最优=10x(爆仓率3.5% vs 20x 11.3%, 期望/名义+0.93% vs +0.30%)
-# 2026-08-30 白露(试错期风控): 原实现把**全部权益**押进单局(名义=权益x10, 逐仓保证金≈权益x0.97),
+# Illustrative strategy notes; not a personal account allocation.
 # 意味着"一局爆仓 = 账户归零"。改为单局只投入权益的 30% 作为保证金:
 # 单局最坏损失从 ~97% 降到 ~30%, 连爆三局仍留有约 34% 权益。
 # 止盈目标按同比例缩放, 保证策略每局要求的**百分比波动**不变(净1U/满仓 ≈ 净0.3U/三成仓 ≈ 1.16% 波动)。
@@ -28,13 +28,13 @@ LOG_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'logs')
 os.makedirs(LOG_DIR, exist_ok=True)
 GAMES_FILE = os.path.join(LOG_DIR, 'games.json')
 KILL_FILE = '/opt/quant/killswitch'
-# 2026-08-30 白露: 原为固定 15.0U(试点沿用, 当时账户 20U+)。当前账户仅 10U 时,
+# Illustrative strategy notes; not a personal account allocation.
 # 阈值高于本金 => 账户亏光也触发不了熔断, 形同虚设。改为「起始权益的 20%」动态计算。
 LOSS_LIMIT_FRACTION = 0.20
 LOSS_LIMIT_FLOOR = 2.0    # 下限 2U, 防止账户极小时阈值趋近 0 导致频繁误熔断
 MARGIN_CHECK_SEC = 300
 _margin_cache = {'ts': 0, 'ok': False}
-TARGET_REPORT = 1000.0    # 达到即停并报告主人
+TARGET_REPORT = 1000.0  # Illustrative configuration, not personal account data.
 
 def equity():
     """可用 USDT 余额(下单基数, 用钱包可用余额而非总权益)"""
@@ -233,7 +233,7 @@ def place(sym, side, link_id, eq):
     step, minq = qty_step(sym)
     d = public('/v5/market/tickers', f'category=linear&symbol={sym}')
     px = float(d['result']['list'][0]['lastPrice'])
-    notional = eq * LEV * 0.97 * RISK_FRACTION  # v4.4 留3%余量付手续费 + 白露: 单局只投三成权益
+    notional = eq * LEV * 0.97 * RISK_FRACTION  # Illustrative configuration, not personal account data.
     qty = round(int(notional / px / step) * step, 8)
     if qty < minq:
         qty = minq
@@ -414,7 +414,7 @@ def main():
                     upnl = float(p.get('unrealisedPnl', 0))
                     eq = equity()
                     # v4.9: 触发线 = 1U净利 + 手续费缓冲(0.13%x名义) + 资金费缓冲(最多2个结算点)
-                    # 白露: 仓位按 RISK_FRACTION 缩小后, 手续费与止盈目标同步缩放, 保持每局要求的百分比波动不变
+# Illustrative strategy notes; not a personal account allocation.
                     tp_nominal = (TP_NET * RISK_FRACTION + COST_RATE * eq * LEV * RISK_FRACTION
                                   + game.get('fund_cushion', 0) * RISK_FRACTION)
                     if upnl >= tp_nominal:
@@ -468,7 +468,7 @@ def main():
         with open(GAMES_FILE, 'w', encoding='utf-8') as f:
             json.dump(games, f, indent=2)
         cum_net = sum(g['net'] for g in games)
-        # 白露: 熔断阈值改为「起始权益的 20%」(原固定 15U 在小账户下永远触发不了)
+# Illustrative strategy notes; not a personal account allocation.
         eq0 = (games[0].get('eq_start') or 0) if games else 0
         loss_limit = max(LOSS_LIMIT_FLOOR, eq0 * LOSS_LIMIT_FRACTION)
         if cum_net <= -loss_limit:

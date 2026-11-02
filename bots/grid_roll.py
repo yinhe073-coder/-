@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# grid_roll.py v1 — 网格滚仓机器人(规则书 v1, 主人钦定 2026-08-30)
+# Public example strategy; configure and validate independently.
 # 每局10U/10x合约网格, 平台止盈+30%自动平, 止损-45%; 平局后滚利润开下一局;
 # 阶梯: 权益>=100划50到主账户 / >=500划250 / >=1000全停报告
 import hashlib, hmac, json, time, os, sys, datetime
@@ -19,11 +19,11 @@ SL_PER = '0.45'
 POLL_SEC = 300
 LADDER_100, LADDER_500, LADDER_1000 = 100.0, 500.0, 1000.0
 HARD_SKIP = {'XAUTUSDT', 'XAGUSDT', 'PAXGUSDT'}  # 代币化贵金属: 网格保证金规则异常, 排除
-MAX_GRIDS = 10         # 并行网格上限(主人 2026-08-31 钦定: 再开7个, 有合适的就开; 10U/格最大敞口100U)
+MAX_GRIDS = 10  # Public example configuration; not an account record.
 ATH_NEAR = 0.02        # 距历史极值 2% 以内算"接近"
 MIN_FUND = 15.0        # FUND 余额低于此值暂停开新局, 留弹药
 COOL_SEC = 4 * 3600    # 输局币冷却 4 小时, 防止同币被平台止损后立刻重开(churn 烧钱)
-AVOID_SKIP = {'MOVRUSDT'}  # 主人手动子账户已有 MOVR 网格, AI 账户不重复押注同一币
+AVOID_SKIP = set(filter(None, os.environ.get('GRID_AVOID_SYMBOLS', '').split(',')))  # Optional operator-configured exclusions; no personal position list.
 SPECIAL_SKIP = {'SKRUSDT'}  # SKR 由克隆塔(skr_clone.py)专管, 主机器人不自动开
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -33,7 +33,7 @@ LOG = os.path.join(LOGDIR, 'grid_roll.log')
 REG = os.path.join(HERE, 'grid_registry.json')
 REC = os.path.join(HERE, 'grid_recommend.json')
 SNAP = os.path.join(HERE, 'grid_snapshot.json')
-BIDF = os.path.join(HERE, 'grid_bot_id.txt')   # 主人 App 开好网格后由总管写入 bot_id
+BIDF = os.path.join(HERE, 'grid_bot_id.txt')  # Public example configuration; not an account record.
 
 def log(msg):
     line = '[%s] %s' % (datetime.datetime.utcfromtimestamp(time.time() + 8 * 3600).strftime('%Y-%m-%d %H:%M:%S'), msg)
@@ -274,14 +274,14 @@ def main():
             # 阶梯检查
             eq = BUDGET + sum(g.get('pnl', 0) for g in reg['history']) + reg['banked']
             if eq >= LADDER_1000:
-                log('=== 阶梯达标 %.0fU: 全停并报告主人 ===' % eq)
+                log('=== 阶梯达标 %.0fU: 全停并报告操作者 ===' % eq)
                 sys.exit(0)
             if eq >= LADDER_500 and not reg.get('l500'):
                 reg['l500'] = True
-                log('=== 阶梯 500U: 划 250U 到主账户(待主人确认后执行) ===')
+                log('=== 阶梯 500U: 划 250U 到主账户(待操作者确认后执行) ===')
             if eq >= LADDER_100 and not reg.get('l100'):
                 reg['l100'] = True
-                log('=== 阶梯 100U: 划 50U 到主账户(待主人确认后执行) ===')
+                log('=== 阶梯 100U: 划 50U 到主账户(待操作者确认后执行) ===')
             # 当前网格列表: bot_id 文件(每行一个) 是唯一真相源
             bids = []
             try:
@@ -292,7 +292,7 @@ def main():
             reg['running'] = bids
             gds = []
             close_done = []
-            noclose = set(reg.get('noclose') or [])  # 主人钦定长期观察的机器人, 软件不执行止盈止损
+            noclose = set(reg.get('noclose') or [])  # Public example configuration; not an account record.
             for bid in bids:
                 d = grid_detail(bid)
                 if d:

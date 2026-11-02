@@ -5,13 +5,13 @@
       "path": "cockpit.css",
       "sourceSha256": "bc80852ab2364ac69fa8258476cf01177160f22c04c35cdd0dc22d2ad254d44d",
       "bytes": 22559,
-      "publishedSha256": "bc80852ab2364ac69fa8258476cf01177160f22c04c35cdd0dc22d2ad254d44d"
+      "publishedSha256": "c864e6c7f79baf1c6b7d257210ec9b7937e5275ece0a702e13aa1c7b4f9cb12d"
     },
     {
       "path": "cockpit.js",
       "sourceSha256": "75649770ac60f42ef730c68f9f96d2796e990abf33b35a1fc805b923d7f2aa78",
       "bytes": 123261,
-      "publishedSha256": "f27c0488b8d0ec042bf0ff2a1f958149c1b41d9c5f430c219477db36265558c1"
+      "publishedSha256": "6151a819493462fe3f413ae25c05f144a6902c03ed0061263d2f6657fd0bdaba"
     },
     {
       "path": "hengpan-scan.js",
@@ -95,7 +95,7 @@
       "path": "readiness-strip.js",
       "sourceSha256": "1b2c5f508b90fdeb336e5660d48f7bb731f276af22bf07ad85fd7b641a8dc49a",
       "bytes": 8598,
-      "publishedSha256": "1b2c5f508b90fdeb336e5660d48f7bb731f276af22bf07ad85fd7b641a8dc49a"
+      "publishedSha256": "c2d72baff55b9cac7b158c1e529695f3d7693df8be3e8cbd2ba8b1007487ea24"
     },
     {
       "path": "redesign.css",
@@ -107,7 +107,7 @@
       "path": "redesign.js",
       "sourceSha256": "78a9ea60c7c948f418ddf845de1c74558b7f7b18427706e2fbddc90b1f9ca916",
       "bytes": 145639,
-      "publishedSha256": "78a9ea60c7c948f418ddf845de1c74558b7f7b18427706e2fbddc90b1f9ca916"
+      "publishedSha256": "ed247d2e49082704d2bceb59fde5627c624a6746f228795b1c02993039df0163"
     },
     {
       "path": "style.css",
@@ -138,7 +138,7 @@
       "sourceSha256": "afd8f6c6c9150ecb43fa3ee9271841aec828bdb76b89c029f8662937685a9bbd",
       "publicSha256": "e3de045abb36794a31c64a811f1c990c123f02619f72abc2b1994d48c8f2f3e4",
       "modification": "prepend public-readonly.js",
-      "publishedSha256": "da3b5022b2b087557ada8b486737035c54bb8655faf91ccd980c83231d332661"
+      "publishedSha256": "16a269cfc08ebf3455c8b8c89d1c709c2a852851bb16f1600162e723bbc6edd5"
     }
   ],
   "excluded": "all runtime JSON, logs, account data, credentials, operational/daemon scripts and private config",
@@ -146,19 +146,23 @@
   "distributionFiles": [
     {
       "path": "public-readonly.js",
-      "publishedSha256": "1d62a81fe13c0750e2f4071f28990f034c60b548182cc134b51c16cf3f04648e"
+      "publishedSha256": "9c66d73ca3026415111739e9d53531a09fcd608ec430f866068227a17fb29177"
     },
     {
       "path": "serve.py",
-      "publishedSha256": "573370d7081c2bd8346e2d9c9c759c480e8dea7f02ede40046bc49cbc6abeccf"
+      "publishedSha256": "4a8560a0af6b2e77cd196ee6ba3ccba1f616f21ccda007ef130a5120d0399f32"
     },
     {
       "path": "test-readonly.mjs",
       "publishedSha256": "4a9f1b10108d594fd185909a7d4cc2d0c8056cd1f334cdb64d362c2d92f8cb64"
     },
     {
+      "path": "test_static.py",
+      "publishedSha256": "4a653b4a32fe9715210bbf869c1ca394be0c2e8748a730f8ac8c30ab019bf724"
+    },
+    {
       "path": "README.md",
-      "publishedSha256": "e85ea84b765bed98c6718f4e42902d8bfad438449f02d268789ed7b4eb550327"
+      "publishedSha256": "d09348b7674fc2f6a015ad86e8d15163d3793d5af742109b3a77ebde76eb4c37"
     }
   ]
 }

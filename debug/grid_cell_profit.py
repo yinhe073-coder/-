@@ -19,7 +19,7 @@ for bid in open('grid_bot_id.txt').read().split():
         d.get('symbol'), cells, arb, gp, per_cycle, per_cell_est,
         float(d.get('pnl') or 0), float(d.get('realised_pnl') or 0), float(d.get('unrealised_pnl') or 0)))
 print()
-print('=== 主人 SKR (已强平) 终局 ===')
+print('=== Configured example bot details ===')
 d = g.grid_detail('YOUR_BOT_ID')
 print('圈数=%s 网格利润=%s 总pnl=%s' % (d.get('arbitrage_num'), d.get('grid_profit'), d.get('pnl')))
 arb = int(float(d.get('arbitrage_num') or 0) or 0)

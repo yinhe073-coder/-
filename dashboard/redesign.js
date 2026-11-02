@@ -91,7 +91,7 @@ const RD_DETAIL_STALE_SEC = 600;
    （tick 侧用的是严格有符号 age；UI 侧留 60s 容差只为容忍浏览器/VPS 的 NTP 漂移。） */
 const RD_CLOCK_SKEW_TOL_SEC = 60;
 
-/* ── 渲染层隐藏名单（主人 2026-10-07 令：这两条从榜上彻底拿掉）─────────────────
+/* ── 渲染层隐藏名单（操作者 2026-10-07 令：这两条从榜上彻底拿掉）─────────────────
    它们是同一类**模拟器缺陷**：名义敞口越界（持仓被跨品种/跨轮次带过来），
    账本上的"收益"绝大部分是那个越界头寸的浮盈，不是它自己挣的 —— 名次不可比。
    ⚠️ 拿掉的只是**展示**：shadow.json / live.json / 后台进程一律不动，数据仍在，
@@ -120,7 +120,7 @@ function setAutoLive(on) {
   rdRenderLock();
   return true;
 }
-/* 主按钮 = 主人放行。只写本地登记簿（登记/排队），**没有任何下单调用**。 */
+/* 主按钮 = 操作者放行。只写本地登记簿（登记/排队），**没有任何下单调用**。 */
 function rdRelease() {
   const cands = rdPromoCands(RD.d);
   if (!cands.length) return;
@@ -128,7 +128,7 @@ function rdRelease() {
   let n = 0;
   for (const c of cands) {
     if (RD.queue[c.key]) continue;
-    RD.queue[c.key] = { name: c.name, ret: c.ret, doubt: !!c.doubt, ts: now, mode: 'register-only', by: '主人' };
+    RD.queue[c.key] = { name: c.name, ret: c.ret, doubt: !!c.doubt, ts: now, mode: 'register-only', by: '操作者' };
     n++;
   }
   try { localStorage.setItem(LS_QUEUE, JSON.stringify(RD.queue)); } catch (e) {}
@@ -219,7 +219,7 @@ function rdHiddenFootHtml(d) {
       (q.ratio ? q.ratio.toFixed(1) : '--') + ' 倍</b>（越界）；累计盈亏里 <code>' + fmtNum(q.unreal, 2) +
       'U</code> 是这个越界头寸的浮盈，不是它自己挣的 ⇒ 名次不可比。</div>';
   }
-  ev += '<div>· 处置：按主人 2026-10-07 令，从影子榜 / 总览在跑的马 / 「影子第一名」KPI / 晋级队列<b>全部拿掉</b>；' +
+  ev += '<div>· 处置：按操作者 2026-10-07 令，从影子榜 / 总览在跑的马 / 「影子第一名」KPI / 晋级队列<b>全部拿掉</b>；' +
     '<b>数据源 shadow.json 与后台 runner 一律未动</b>，本条仍可在下面这些地方查到。</div>' +
     '<div>· 依据文件：<code>量化交易/工程/影子盘异常审计-shadow_grid_roll-20261007.md</code>、' +
     '<code>量化交易/工程/赛马榜-实盘入榜-20261007.md</code>；系统闸门 <code>PnL_VALIDATED = false</code>（名次本就不能当晋级依据）。</div>';
@@ -347,7 +347,7 @@ function rdLiveSrcHtml(d) {
 }
 
 /* ── 样本跨度（文案一律叫「可查区间」）──────────────────────────────────────
-   ⚠️ 口径纠错（2026-10-07 主人实测）：Bybit closed-pnl **单次跨度上限 7 天**、可回溯深度远小于 90 天
+   ⚠️ 口径纠错（2026-10-07 操作者实测）：Bybit closed-pnl **单次跨度上限 7 天**、可回溯深度远小于 90 天
    ⇒ 数据侧那套 `*_90d` 键实际是「**全部可查区间**」，不是 90 天样本（本账号约 41 天：08-28→10-07；
    HYPE 只有 27 天：09-11 起）。数值没错，**错的是「90 天」这四个字** —— 会让人以为样本有 90 天。
    处置：① 文案只写「可查区间」；② 有 `window_span` 就显示起止与天数（每台分开）；③ 没有就用日桶反推，
@@ -389,7 +389,7 @@ function rdSpanUnion(bots) {
 
 /* ── 总览 KPI 的唯一数据源：live_detail.json（可查区间优先）；缺了才回退 live.json ──
    为什么必须统一：live.json 是按需脚本产出的、**不会自动刷新**，而 live_detail.json 是另一路在写
-   ⇒ 同一屏两处数字不同源 → 主人看到「总览没更新」（2026-10-07 事故）。
+   ⇒ 同一屏两处数字不同源 → 操作者看到「总览没更新」（2026-10-07 事故）。
    为什么优先可查区间：运行窗口口径会被**进程重启清零**（当天 17:10 刚发生一次：HYPE 的
    realized_net/funding 直接归 0，卡片从 +5.37 掉下去 —— 那不是亏损，是口径重置）。 */
 function rdLiveKpis() {
@@ -494,7 +494,7 @@ function rdKpiRunHtml(k) {
       : '');
 }
 
-/* ── 极简四步动线带（主人 2026-10-08 令）──────────────────────────────────
+/* ── 极简四步动线带（操作者 2026-10-08 令）──────────────────────────────────
    要求：**总高 ≤72px、一行 4 格、每格只有「一个数字 + 标签」、不要副标题**；
    数字必须与「晋级 / 影子榜」**同源**（不新造），取不到显示 `--`、不拿 0 冒充。
    位置：必须在实盘聚焦面板（live-focus.js prepend 的 #liveFocus）**上方** ——
@@ -831,7 +831,7 @@ function rdRenderOverview() {
   }
 
   /* 实盘条目 —— 🔴 2026-10-12 改（QUANT-LIVE-PREP-20261012 · D①/D④）：
-     ① 原来只印「本腿收益率」，而账户级真值在页面顶部另一块 ⇒ 主人易把单腿数当账户数；
+     ① 原来只印「本腿收益率」，而账户级真值在页面顶部另一块 ⇒ 操作者易把单腿数当账户数；
         ⇒ 现在**同一行并列**印「账户级」与「本腿」两个数，**各自带口径标签**（title）。
      ② 本腿数的分子分母已改为同口径（见 live_rank_fetch.py D④），不再与账户级分母混用。 */
   const rows = $('ovLiveRows');
@@ -943,11 +943,11 @@ function rdRenderPromote() {
   if (ns) {
     ns.innerHTML =
       '<div class="ni"><span class="no">1</span><div><b>接通下单通路（本轮不做）</b>：需要在 <code>live/</code> 下新增一个「实盘执行器」，' +
-        '只接受白名单策略 ID ＋ 硬性风控（单笔上限、日亏上限、最大杠杆），并且必须由主人逐次拍板。谁拍板：主人。</div></div>' +
+        '只接受白名单策略 ID ＋ 硬性风控（单笔上限、日亏上限、最大杠杆），并且必须由操作者逐次拍板。谁拍板：操作者。</div></div>' +
       '<div class="ni"><span class="no">2</span><div><b>先开闸门</b>：独立验证影子盘计价口径（补强平/保证金/仓位上限/滑点），' +
         '验证通过后把 <code>shadow.json.pnl_validated</code> 置 true —— 那一刻 AUTO_LIVE_PROMOTE 才允许点亮。</div></div>' +
       '<div class="ni"><span class="no">3</span><div><b>预留接口</b>：前端登记簿现在只写浏览器本地（<code>localStorage: ' + LS_QUEUE + '</code>）。' +
-        '要变成真登记，需后端接一个只写不执行的 <code>POST /api/live/queue</code>（落 <code>dashboard/live_queue.json</code>），由主人拍板后实施。</div></div>';
+        '要变成真登记，需后端接一个只写不执行的 <code>POST /api/live/queue</code>（落 <code>dashboard/live_queue.json</code>），由操作者拍板后实施。</div></div>';
   }
   const ts = $('promoteTabTs');
   if (ts) { const n = Object.keys(RD.queue).length; ts.textContent = n ? String(n) : ''; }
@@ -1105,7 +1105,7 @@ function rdPosTable(legs) {
 }
 function rdUnavail(list, i, notes) {
   if (!Array.isArray(list) || !list.length) return '';
-  /* 主人令（2026-10-07）：取不到的东西**必须显示出来**，不许当它不存在。
+  /* 操作者令（2026-10-07）：取不到的东西**必须显示出来**，不许当它不存在。
      处置：台面上把 6 条**短标题全列**（一行读完），上百字的长句折进「逐条明细」。 */
   const titles = list.map(rdUnaTitle);
   let h = '<div class="unavail"><b>本次取不到 ' + list.length + ' 项：</b>' + esc(titles.join(' / ')) +
